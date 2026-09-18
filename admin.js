@@ -3,7 +3,7 @@
 // ========================================
 
 const GUEST_API =
-  "https://script.google.com/macros/s/AKfycbxsoD7mXaD84o6aE6Cd5c4SHA3wXoTXFDmaB1-_KG9e8C72tb7yTjl1HiNELhV196vHOA/exec";
+  "https://script.google.com/macros/s/AKfycbwTnqFyV4DbCstnwdfk6mch1vV_e3ZBTTdZQF9O39fKt99jjBvPmUsk0rnac-AXo-1vaA/exec";
 
 const API_URL = GUEST_API;
 
@@ -22,13 +22,11 @@ if (!ADMIN_TOKEN) {
 }
 
 // ========================================
-// DATA TAMU
+// DATA
 // ========================================
 
 let semuaGuests = [];
-
 let semuaRSVP = [];
-
 let semuaUcapan = [];
 
 // ========================================
@@ -60,26 +58,31 @@ async function apiGet(action) {
     return null;
   }
 
-  const url =
-    GUEST_API +
-    "?action=" +
-    encodeURIComponent(action) +
-    "&token=" +
-    encodeURIComponent(ADMIN_TOKEN);
+  try {
+    const url =
+      GUEST_API +
+      "?action=" +
+      encodeURIComponent(action) +
+      "&token=" +
+      encodeURIComponent(ADMIN_TOKEN);
 
-  const response = await fetch(url);
+    const response = await fetch(url);
 
-  if (!response.ok) {
-    throw new Error("HTTP Error " + response.status);
+    if (!response.ok) {
+      throw new Error("HTTP Error " + response.status);
+    }
+
+    const result = await response.json();
+
+    if (!cekAuth(result)) {
+      return null;
+    }
+
+    return result;
+  } catch (error) {
+    console.error("API GET Error:", error);
+    throw error;
   }
-
-  const result = await response.json();
-
-  if (!cekAuth(result)) {
-    return null;
-  }
-
-  return result;
 }
 
 // ========================================
@@ -92,26 +95,31 @@ async function apiPost(data) {
     return null;
   }
 
-  const response = await fetch(GUEST_API, {
-    method: "POST",
+  try {
+    const response = await fetch(GUEST_API, {
+      method: "POST",
 
-    body: JSON.stringify({
-      ...data,
-      token: ADMIN_TOKEN,
-    }),
-  });
+      body: JSON.stringify({
+        ...data,
+        token: ADMIN_TOKEN,
+      }),
+    });
 
-  if (!response.ok) {
-    throw new Error("HTTP Error " + response.status);
+    if (!response.ok) {
+      throw new Error("HTTP Error " + response.status);
+    }
+
+    const result = await response.json();
+
+    if (!cekAuth(result)) {
+      return null;
+    }
+
+    return result;
+  } catch (error) {
+    console.error("API POST Error:", error);
+    throw error;
   }
-
-  const result = await response.json();
-
-  if (!cekAuth(result)) {
-    return null;
-  }
-
-  return result;
 }
 
 // ========================================
@@ -122,27 +130,26 @@ async function loadGuests() {
   try {
     const result = await apiGet("getGuests");
 
-    if (result === null) {
+    if (!result) {
       return;
     }
 
-    // ========================================
-    // SIMPAN DATA
-    // ========================================
+    console.log("Response daftar tamu:", result);
 
-    semuaGuests = Array.isArray(result) ? result : [];
+    if (result.result !== "success") {
+      throw new Error(result.message || "Gagal mengambil data tamu.");
+    }
 
-    // ========================================
-    // TAMPILKAN DATA
-    // ========================================
+    // API baru menggunakan result.data
+    semuaGuests = Array.isArray(result.data) ? result.data : [];
 
+    // Tampilkan daftar
     tampilkanGuests(semuaGuests);
 
-    // ========================================
-    // UPDATE STATISTIK
-    // ========================================
-
+    // Update statistik
     updateStatistik(semuaGuests);
+
+    // Update semua statistik dashboard
     updateStatistikDashboard();
   } catch (error) {
     console.error("Gagal mengambil daftar tamu:", error);
@@ -214,13 +221,11 @@ function tampilkanGuests(guests) {
       <tr class="border-b hover:bg-gray-50">
 
         <!-- NO -->
-
         <td class="px-4 py-4 text-sm">
           ${guest.no || index + 1}
         </td>
 
         <!-- NAMA -->
-
         <td class="px-4 py-4">
           <div class="font-semibold text-gray-800">
             ${escapeHTML(guest.nama)}
@@ -228,7 +233,6 @@ function tampilkanGuests(guests) {
         </td>
 
         <!-- LINK -->
-
         <td class="px-4 py-4">
 
           <div class="flex items-center gap-2">
@@ -254,30 +258,42 @@ function tampilkanGuests(guests) {
         </td>
 
         <!-- STATUS -->
-
         <td class="px-4 py-4">
 
-          <span
-            class="inline-block px-3 py-1 rounded-full text-xs font-semibold ${statusClass}"
+          <select
+            onchange="updateGuestStatus(${guest.row}, this.value)"
+            class="status-select ${statusClass} border-0 rounded-full px-3 py-1 text-xs font-semibold cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-1"
           >
-            ${escapeHTML(status)}
-          </span>
+
+            <option
+              value="Belum Dikirim"
+              ${status === "Belum Dikirim" ? "selected" : ""}
+            >
+              Belum Dikirim
+            </option>
+
+            <option
+              value="Sudah Dikirim"
+              ${status === "Sudah Dikirim" ? "selected" : ""}
+            >
+              Sudah Dikirim
+            </option>
+
+          </select>
 
         </td>
 
         <!-- AKSI -->
-
         <td class="px-4 py-4">
 
           <div class="flex flex-wrap gap-2">
 
             <!-- EDIT -->
-
             <button
               onclick="editGuest(
                 ${guest.row},
                 '${escapeAttribute(guest.nama)}',
-                '${escapeAttribute(guest.nomor)}'
+                '${escapeAttribute(guest.nomorWA)}'
               )"
               class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-semibold"
             >
@@ -285,11 +301,10 @@ function tampilkanGuests(guests) {
             </button>
 
             <!-- WHATSAPP -->
-
             <button
               onclick="sendWhatsApp(
                 '${escapeAttribute(guest.nama)}',
-                '${escapeAttribute(guest.nomor)}',
+                '${escapeAttribute(guest.nomorWA)}',
                 '${escapeAttribute(guest.link)}',
                 ${guest.row}
               )"
@@ -299,7 +314,6 @@ function tampilkanGuests(guests) {
             </button>
 
             <!-- HAPUS -->
-
             <button
               onclick="deleteGuest(
                 ${guest.row},
@@ -332,14 +346,8 @@ function updateStatistik(guests) {
 
   const belumDikirim = total - sudahDikirim;
 
-  // ========================================
-  // SESUAI DENGAN ID DI ADMIN.HTML
-  // ========================================
-
   const totalElement = document.getElementById("total-tamu");
-
   const sudahElement = document.getElementById("sudah-dikirim");
-
   const belumElement = document.getElementById("belum-dikirim");
 
   if (totalElement) {
@@ -404,7 +412,6 @@ async function sendWhatsApp(nama, nomorWA, link, row) {
 
   if (!nomorWA) {
     alert("Nomor WhatsApp tamu belum tersedia.");
-
     return;
   }
 
@@ -445,23 +452,74 @@ Terima kasih 🙏`;
     const result = await apiPost({
       type: "updateStatus",
       row: row,
+      status: "Sudah Dikirim",
     });
 
-    if (result === null) {
+    console.log("Response update status:", result);
+
+    if (!result) {
       return;
     }
 
     if (result.result === "success") {
       console.log("Status berhasil diubah menjadi Sudah Dikirim.");
 
-      setTimeout(function () {
-        loadGuests();
-      }, 500);
+      await loadGuests();
     } else {
       console.error("Gagal update status:", result);
+
+      alert(result.message || "Gagal memperbarui status tamu.");
     }
   } catch (error) {
     console.error("Error update status:", error);
+
+    alert("WhatsApp berhasil dibuka, tetapi status tamu gagal diperbarui.");
+  }
+}
+
+// ========================================
+// UPDATE STATUS TAMU
+// ========================================
+
+async function updateGuestStatus(row, status) {
+  if (!row) {
+    alert("Baris tamu tidak valid.");
+    return;
+  }
+
+  if (!status) {
+    alert("Status tidak boleh kosong.");
+    return;
+  }
+
+  try {
+    const result = await apiPost({
+      type: "updateStatus",
+      row: row,
+      status: status,
+    });
+
+    console.log("Response update status:", result);
+
+    if (!result) {
+      return;
+    }
+
+    if (result.result === "success") {
+      console.log("Status berhasil diperbarui.");
+
+      await loadGuests();
+    } else {
+      alert(result.message || "Gagal memperbarui status.");
+
+      await loadGuests();
+    }
+  } catch (error) {
+    console.error("Error update status:", error);
+
+    alert("Terjadi kesalahan saat memperbarui status.");
+
+    await loadGuests();
   }
 }
 
@@ -508,18 +566,30 @@ async function tambahTamu() {
     return;
   }
 
-  // ========================================
-  // VALIDASI ANGKA
-  // ========================================
-
   if (!/^[0-9]+$/.test(nomorWA)) {
     alert(
-      "Nomor WhatsApp hanya boleh berisi angka.\n\n" +
-        "Contoh:\n628525263452719"
+      "Nomor WhatsApp hanya boleh berisi angka.\n\n" + "Contoh:\n628123456789"
     );
 
     inputWA.focus();
 
+    return;
+  }
+
+  // ========================================
+  // KONFIRMASI
+  // ========================================
+
+  const yakin = confirm(
+    "Tambahkan tamu berikut?\n\n" +
+      "Nama: " +
+      nama +
+      "\n" +
+      "WhatsApp: " +
+      nomorWA
+  );
+
+  if (!yakin) {
     return;
   }
 
@@ -534,29 +604,20 @@ async function tambahTamu() {
       nomorWA: nomorWA,
     });
 
-    if (result === null) {
+    console.log("Response tambah tamu:", result);
+
+    if (!result) {
       return;
     }
 
-    console.log("Response Apps Script:", result);
-
-    // ========================================
-    // BERHASIL
-    // ========================================
-
     if (result.result === "success") {
-      alert("Tamu berhasil ditambahkan!");
+      alert("✅ Tamu berhasil ditambahkan!");
 
       inputNama.value = "";
       inputWA.value = "";
 
       await loadGuests();
-    }
-
-    // ========================================
-    // GAGAL
-    // ========================================
-    else {
+    } else {
       alert(result.message || "Gagal menambahkan tamu.");
     }
   } catch (error) {
@@ -607,15 +668,8 @@ async function editGuest(row, namaLama, nomorLama) {
     return;
   }
 
-  // ========================================
-  // VALIDASI NOMOR
-  // ========================================
-
   if (!/^[0-9]+$/.test(nomorWA)) {
-    alert(
-      "Nomor WhatsApp hanya boleh berisi angka.\n\n" +
-        "Contoh:\n628525263452719"
-    );
+    alert("Nomor WhatsApp hanya boleh berisi angka.");
 
     return;
   }
@@ -633,7 +687,7 @@ async function editGuest(row, namaLama, nomorLama) {
   }
 
   // ========================================
-  // UPDATE
+  // KIRIM KE APPS SCRIPT
   // ========================================
 
   try {
@@ -644,14 +698,14 @@ async function editGuest(row, namaLama, nomorLama) {
       nomorWA: nomorWA,
     });
 
-    if (result === null) {
+    console.log("Response update tamu:", result);
+
+    if (!result) {
       return;
     }
 
-    console.log("Response update tamu:", result);
-
     if (result.result === "success") {
-      alert("Data tamu berhasil diperbarui!");
+      alert("✅ Data tamu berhasil diperbarui!");
 
       await loadGuests();
     } else {
@@ -687,14 +741,14 @@ async function deleteGuest(row, nama) {
       row: row,
     });
 
-    if (result === null) {
+    console.log("Response hapus tamu:", result);
+
+    if (!result) {
       return;
     }
 
-    console.log("Response hapus tamu:", result);
-
     if (result.result === "success") {
-      alert("Tamu berhasil dihapus.");
+      alert("🗑️ Tamu berhasil dihapus.");
 
       await loadGuests();
     } else {
@@ -742,6 +796,10 @@ document.addEventListener("DOMContentLoaded", function () {
   loadGuests();
   loadRSVP();
   loadUcapan();
+
+  // ========================================
+  // LOGOUT
+  // ========================================
 
   const btnLogout = document.getElementById("btnLogout");
 
@@ -805,25 +863,18 @@ async function logoutAdmin() {
 
   window.location.replace("admin-login.html");
 }
+
 // ========================================
 // LOAD DATA RSVP
 // ========================================
 
 async function loadRSVP() {
   try {
-    const token = sessionStorage.getItem("adminToken");
+    const result = await apiGet("getRSVP");
 
-    if (!token) {
-      console.log("Token admin tidak ditemukan.");
-
+    if (!result) {
       return;
     }
-
-    const response = await fetch(
-      `${API_URL}?action=getRSVP&token=${encodeURIComponent(token)}`
-    );
-
-    const result = await response.json();
 
     console.log("Data RSVP:", result);
 
@@ -861,19 +912,11 @@ async function loadRSVP() {
 
 async function loadUcapan() {
   try {
-    const token = sessionStorage.getItem("adminToken");
+    const result = await apiGet("getUcapan");
 
-    if (!token) {
-      console.log("Token admin tidak ditemukan.");
-
+    if (!result) {
       return;
     }
-
-    const response = await fetch(
-      `${GUEST_API}?action=getUcapan&token=${encodeURIComponent(token)}`
-    );
-
-    const result = await response.json();
 
     console.log("Data Ucapan:", result);
 
@@ -1034,10 +1077,10 @@ function tampilkanRSVP(data) {
 
   if (!data || data.length === 0) {
     container.innerHTML = `
-          <div class="text-center text-gray-400 py-8">
-              Belum ada data RSVP.
-          </div>
-      `;
+      <div class="text-center text-gray-400 py-8">
+        Belum ada data RSVP.
+      </div>
+    `;
 
     return;
   }
@@ -1045,33 +1088,33 @@ function tampilkanRSVP(data) {
   container.innerHTML = data
     .map(function (item, index) {
       return `
-              <div class="border-b border-gray-100 py-4">
+            <div class="border-b border-gray-100 py-4">
 
-                  <div class="flex justify-between items-start gap-3">
+              <div class="flex justify-between items-start gap-3">
 
-                      <div>
+                <div>
 
-                          <div class="font-semibold text-gray-800">
-                              ${escapeHTML(item.nama)}
-                          </div>
-
-                          <div class="text-sm text-gray-500 mt-1">
-                              ${escapeHTML(item.kehadiran)}
-                          </div>
-
-                      </div>
-
-                      <div class="text-sm font-semibold text-gray-600">
-                          ${item.jumlah} orang
-                      </div>
-
+                  <div class="font-semibold text-gray-800">
+                    ${escapeHTML(item.nama)}
                   </div>
 
-                  <div class="text-xs text-gray-400 mt-2">
-                      ${formatTanggal(item.waktu)}
+                  <div class="text-sm text-gray-500 mt-1">
+                    ${escapeHTML(item.kehadiran)}
                   </div>
+
+                </div>
+
+                <div class="text-sm font-semibold text-gray-600">
+                  ${item.jumlah} orang
+                </div>
 
               </div>
+
+              <div class="text-xs text-gray-400 mt-2">
+                ${formatTanggal(item.waktu)}
+              </div>
+
+            </div>
           `;
     })
     .join("");
@@ -1090,10 +1133,10 @@ function tampilkanUcapan(data) {
 
   if (!data || data.length === 0) {
     container.innerHTML = `
-          <div class="text-center text-gray-400 py-8">
-              Belum ada ucapan.
-          </div>
-      `;
+      <div class="text-center text-gray-400 py-8">
+        Belum ada ucapan.
+      </div>
+    `;
 
     return;
   }
@@ -1101,21 +1144,21 @@ function tampilkanUcapan(data) {
   container.innerHTML = data
     .map(function (item) {
       return `
-              <div class="border-b border-gray-100 py-4">
+            <div class="border-b border-gray-100 py-4">
 
-                  <div class="font-semibold text-gray-800">
-                      ${escapeHTML(item.nama)}
-                  </div>
-
-                  <div class="text-sm text-gray-600 mt-2 leading-relaxed">
-                      ${escapeHTML(item.ucapan)}
-                  </div>
-
-                  <div class="text-xs text-gray-400 mt-2">
-                      ${formatTanggal(item.waktu)}
-                  </div>
-
+              <div class="font-semibold text-gray-800">
+                ${escapeHTML(item.nama)}
               </div>
+
+              <div class="text-sm text-gray-600 mt-2 leading-relaxed">
+                ${escapeHTML(item.ucapan)}
+              </div>
+
+              <div class="text-xs text-gray-400 mt-2">
+                ${formatTanggal(item.waktu)}
+              </div>
+
+            </div>
           `;
     })
     .join("");
@@ -1144,3 +1187,38 @@ function formatTanggal(value) {
     minute: "2-digit",
   });
 }
+
+// ========================================
+// AUTO REFRESH DATA ADMIN
+// ========================================
+
+let autoRefreshAktif = true;
+let sedangMemuatData = false;
+
+async function autoRefreshDashboard() {
+  // Jangan jalankan jika proses sebelumnya belum selesai
+  if (sedangMemuatData) {
+    return;
+  }
+
+  sedangMemuatData = true;
+
+  try {
+    await Promise.all([loadGuests(), loadRSVP(), loadUcapan()]);
+
+    console.log("🔄 Data admin diperbarui otomatis.");
+  } catch (error) {
+    console.error("Auto refresh gagal:", error);
+  } finally {
+    sedangMemuatData = false;
+  }
+}
+
+// Jalankan setiap 5 detik
+setInterval(function () {
+  if (!autoRefreshAktif) {
+    return;
+  }
+
+  autoRefreshDashboard();
+}, 5000);

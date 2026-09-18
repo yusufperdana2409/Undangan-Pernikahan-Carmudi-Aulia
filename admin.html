@@ -2,15 +2,13 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Admin Panel - Daftar Tamu</title>
+    <title>Secure Admin Panel — Carmud & Aulia</title>
 
     <!-- ========================================
-       CEK LOGIN
-  ======================================== -->
-
+         CEK LOGIN
+    ======================================== -->
     <script>
       const adminToken = sessionStorage.getItem("adminToken");
 
@@ -21,280 +19,869 @@
 
     <link rel="icon" href="data:," />
 
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: radial-gradient(
+            circle at 15% 20%,
+            rgba(124, 58, 237, 0.18),
+            transparent 30%
+          ),
+          radial-gradient(
+            circle at 85% 10%,
+            rgba(59, 130, 246, 0.12),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 50% 100%,
+            rgba(139, 92, 246, 0.12),
+            transparent 35%
+          ),
+          #050816;
+        color: #e5e7eb;
+        min-height: 100vh;
+      }
+
+      /* Background grid */
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.035) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.035) 1px,
+            transparent 1px
+          );
+        background-size: 45px 45px;
+        mask-image: linear-gradient(to bottom, black, transparent);
+        z-index: -1;
+      }
+
+      /* Glass card */
+
+      .glass {
+        background: rgba(15, 23, 42, 0.72);
+        border: 1px solid rgba(148, 163, 184, 0.13);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25),
+          inset 0 1px 0 rgba(255, 255, 255, 0.035);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      /* Glow */
+
+      .purple-glow {
+        box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.12),
+          0 15px 45px rgba(109, 40, 217, 0.12);
+      }
+
+      /* Statistic card */
+
+      .stat-card {
+        transition: transform 0.25s ease, border-color 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(139, 92, 246, 0.35);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3),
+          0 0 30px rgba(124, 58, 237, 0.08);
+      }
+
+      /* Inputs */
+
+      .admin-input {
+        background: rgba(2, 6, 23, 0.72);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        color: #f8fafc;
+        transition: all 0.2s ease;
+      }
+
+      .admin-input::placeholder {
+        color: #64748b;
+      }
+
+      .admin-input:focus {
+        outline: none;
+        border-color: rgba(139, 92, 246, 0.7);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+      }
+
+      /* Buttons */
+
+      .btn-primary {
+        background: linear-gradient(135deg, #7c3aed, #6d28d9);
+        box-shadow: 0 10px 25px rgba(109, 40, 217, 0.25);
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 30px rgba(109, 40, 217, 0.38);
+      }
+
+      .btn-logout {
+        transition: all 0.2s ease;
+      }
+
+      .btn-logout:hover {
+        background: rgba(239, 68, 68, 0.12);
+        border-color: rgba(239, 68, 68, 0.4);
+        color: #fca5a5;
+      }
+
+      /* Section title */
+
+      .section-title {
+        color: #f8fafc;
+        letter-spacing: -0.02em;
+      }
+
+      /* Table */
+
+      table {
+        border-collapse: collapse;
+      }
+
+      thead {
+        background: rgba(2, 6, 23, 0.65);
+      }
+
+      thead th {
+        color: #94a3b8;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+      }
+
+      tbody tr {
+        border-top: 1px solid rgba(148, 163, 184, 0.08);
+        transition: background 0.2s ease;
+      }
+
+      tbody tr:hover {
+        background: rgba(139, 92, 246, 0.045);
+      }
+
+      /* Scrollbar */
+
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #050816;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #312e81;
+        border-radius: 20px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #4c1d95;
+      }
+
+      /* Status indicator */
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #34d399;
+        border-radius: 50%;
+        box-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.45;
+        }
+      }
+
+      /* Decorative orb */
+
+      .orb {
+        position: fixed;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: rgba(124, 58, 237, 0.06);
+        filter: blur(60px);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .orb-1 {
+        top: 10%;
+        left: -100px;
+      }
+
+      .orb-2 {
+        bottom: 5%;
+        right: -100px;
+        background: rgba(59, 130, 246, 0.05);
+      }
+
+      /* Mobile */
+
+      @media (max-width: 640px) {
+        .mobile-title {
+          font-size: 1.25rem;
+        }
+
+        .stat-number {
+          font-size: 1.8rem;
+        }
+      }
+      /* ========================================
+   FIX TEXT COLOR - DARK DASHBOARD
+======================================== */
+
+      /* Semua teks di tabel tamu */
+      #guest-list,
+      #guest-list td,
+      #guest-list span,
+      #guest-list div,
+      #guest-list p,
+      #guest-list a {
+        color: #e2e8f0 !important;
+      }
+
+      /* Nama tamu */
+      #guest-list td:nth-child(2) {
+        color: #f8fafc !important;
+        font-weight: 600;
+      }
+
+      /* Nomor tabel */
+      #guest-list td:first-child {
+        color: #cbd5e1 !important;
+      }
+
+      /* Link undangan */
+      #guest-list a {
+        color: #a78bfa !important;
+      }
+
+      #guest-list a:hover {
+        color: #c4b5fd !important;
+      }
+
+      /* Tombol tetap punya warna masing-masing */
+      #guest-list button {
+        color: white !important;
+      }
+
+      /* RSVP */
+      #rsvpList,
+      #rsvpList div,
+      #rsvpList p,
+      #rsvpList span {
+        color: #e2e8f0 !important;
+      }
+
+      /* Nama RSVP */
+      #rsvpList .font-bold,
+      #rsvpList .font-semibold {
+        color: #f8fafc !important;
+      }
+
+      /* Ucapan */
+      #ucapanList,
+      #ucapanList div,
+      #ucapanList p,
+      #ucapanList span {
+        color: #e2e8f0 !important;
+      }
+
+      /* Nama pemberi ucapan */
+      #ucapanList .font-bold,
+      #ucapanList .font-semibold {
+        color: #f8fafc !important;
+      }
+
+      /* Placeholder kosong / loading */
+      #rsvpList .text-gray-400,
+      #ucapanList .text-gray-400 {
+        color: #94a3b8 !important;
+      }
+
+      /* Select status */
+      #guest-list select {
+        color: #0f172a !important;
+        background-color: #e2e8f0 !important;
+      }
+
+      /* Option dropdown */
+      #guest-list select option {
+        color: #0f172a !important;
+        background-color: #ffffff !important;
+      }
+
+      /* Teks umum di tabel */
+      #guest-list th,
+      #guest-list td {
+        border-color: rgba(148, 163, 184, 0.18) !important;
+      }
+    </style>
   </head>
 
-  <body class="bg-gray-100 min-h-screen">
+  <body>
+    <!-- Decorative background -->
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
     <!-- ========================================
-       HEADER
-  ======================================== -->
-
-    <div class="max-w-6xl mx-auto px-4 py-8">
-      <div
-        class="bg-white rounded-xl shadow p-6 mb-6 flex items-center justify-between"
-      >
-        <div>
-          <h1 class="text-2xl font-bold text-gray-800">Admin Panel</h1>
-
-          <p class="text-gray-500 mt-1">Kelola daftar tamu undangan</p>
-        </div>
-
-        <!-- LOGOUT -->
-
-        <button
-          id="btnLogout"
-          class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
-        >
-          🚪 Logout
-        </button>
-      </div>
-
-      <!-- ========================================
-     DASHBOARD STATISTIK
-======================================== -->
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <!-- TOTAL TAMU -->
-
-        <div class="bg-white rounded-xl shadow p-5">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-500">Total Tamu</p>
-
-              <p id="total-tamu" class="text-3xl font-bold text-gray-800 mt-1">
-                0
-              </p>
-            </div>
-
-            <div class="text-3xl">👥</div>
-          </div>
-        </div>
-
-        <!-- SUDAH DIKIRIM -->
-
-        <div class="bg-white rounded-xl shadow p-5">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-500">Sudah Dikirim</p>
-
-              <p
-                id="sudah-dikirim"
-                class="text-3xl font-bold text-green-600 mt-1"
-              >
-                0
-              </p>
-            </div>
-
-            <div class="text-3xl">🟢</div>
-          </div>
-        </div>
-
-        <!-- BELUM DIKIRIM -->
-
-        <div class="bg-white rounded-xl shadow p-5">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-500">Belum Dikirim</p>
-
-              <p
-                id="belum-dikirim"
-                class="text-3xl font-bold text-gray-600 mt-1"
-              >
-                0
-              </p>
-            </div>
-
-            <div class="text-3xl">⚪</div>
-          </div>
-        </div>
-
-        <!-- TOTAL RSVP -->
-
-        <div class="bg-white rounded-xl shadow p-5">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-500">Total RSVP</p>
-
-              <p id="total-rsvp" class="text-3xl font-bold text-blue-600 mt-1">
-                0
-              </p>
-            </div>
-
-            <div class="text-3xl">📋</div>
-          </div>
-        </div>
-
-        <!-- HADIR -->
-
-        <div class="bg-white rounded-xl shadow p-5">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-500">Hadir</p>
-
-              <p
-                id="total-hadir"
-                class="text-3xl font-bold text-emerald-600 mt-1"
-              >
-                0
-              </p>
-            </div>
-
-            <div class="text-3xl">💚</div>
-          </div>
-        </div>
-
-        <!-- TIDAK HADIR -->
-
-        <div class="bg-white rounded-xl shadow p-5">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-500">Tidak Hadir</p>
-
-              <p
-                id="total-tidak-hadir"
-                class="text-3xl font-bold text-red-600 mt-1"
-              >
-                0
-              </p>
-            </div>
-
-            <div class="text-3xl">❌</div>
-          </div>
-        </div>
-
-        <!-- TOTAL UCAPAN -->
-
-        <div class="bg-white rounded-xl shadow p-5">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-500">Ucapan</p>
-
-              <p
-                id="total-ucapan"
-                class="text-3xl font-bold text-purple-600 mt-1"
-              >
-                0
-              </p>
-            </div>
-
-            <div class="text-3xl">💬</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ========================================
-         TAMBAH TAMU
+         MAIN CONTAINER
     ======================================== -->
 
-      <div class="bg-white rounded-xl shadow p-6 mb-6">
-        <h2 class="text-lg font-bold mb-4">Tambah Tamu</h2>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+      <!-- ========================================
+           HEADER / NAVBAR
+      ======================================== -->
 
-        <div class="grid md:grid-cols-2 gap-3">
-          <input
-            type="text"
-            id="namaTamu"
-            placeholder="Nama tamu"
-            class="w-full px-4 py-3 border rounded-lg"
-          />
-
-          <input
-            type="text"
-            id="nomorWA"
-            placeholder="Nomor WhatsApp, contoh: 628123456789"
-            class="w-full px-4 py-3 border rounded-lg"
-          />
-        </div>
-
-        <button
-          type="button"
-          id="btnTambahTamu"
-          class="mt-3 bg-slate-800 text-white px-5 py-3 rounded-lg hover:bg-slate-700"
+      <header class="glass purple-glow rounded-2xl p-5 md:p-6 mb-6">
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between gap-5"
         >
-          + Tambah Tamu
-        </button>
-      </div>
+          <!-- BRAND -->
+
+          <div class="flex items-center gap-4">
+            <div
+              class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-700 flex items-center justify-center shadow-lg shadow-violet-900/30"
+            >
+              <span class="text-xl">✦</span>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-2">
+                <h1
+                  class="mobile-title text-2xl md:text-3xl font-extrabold text-white"
+                >
+                  Admin Control
+                </h1>
+
+                <span
+                  class="hidden sm:inline-flex px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-violet-500/10 text-violet-300 border border-violet-500/20"
+                >
+                  Secure
+                </span>
+              </div>
+
+              <p class="text-sm text-slate-400 mt-1">
+                Wedding Management System
+              </p>
+            </div>
+          </div>
+
+          <!-- SYSTEM STATUS -->
+
+          <div class="flex flex-wrap items-center gap-3">
+            <div
+              class="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/5 border border-emerald-500/15"
+            >
+              <span class="status-dot"></span>
+
+              <span class="text-xs font-semibold text-emerald-300">
+                SYSTEM ONLINE
+              </span>
+            </div>
+
+            <div
+              class="hidden sm:flex items-center px-3 py-2 rounded-lg bg-white/[0.03] border border-white/[0.06]"
+            >
+              <span class="text-xs text-slate-400"> CARMUD & AULIA </span>
+            </div>
+
+            <button
+              id="btnLogout"
+              type="button"
+              class="btn-logout px-4 py-2.5 rounded-lg border border-red-500/20 bg-red-500/5 text-red-300 text-sm font-semibold"
+            >
+              <span>↪</span>
+              Logout
+            </button>
+          </div>
+        </div>
+      </header>
 
       <!-- ========================================
-         DAFTAR TAMU
+           WELCOME / ADMIN INFO
+      ======================================== -->
+
+      <section class="mb-6">
+        <div class="glass rounded-2xl p-5 md:p-6 relative overflow-hidden">
+          <div
+            class="absolute top-0 right-0 w-48 h-48 bg-violet-600/10 rounded-full blur-3xl"
+          ></div>
+
+          <div class="relative">
+            <p
+              class="text-xs uppercase tracking-[0.2em] text-violet-400 font-semibold mb-2"
+            >
+              PRIVATE DASHBOARD
+            </p>
+
+            <h2 class="text-xl md:text-2xl font-bold text-white">
+              Kelola Undangan Pernikahan
+            </h2>
+
+            <p class="text-sm text-slate-400 mt-2 max-w-2xl">
+              Pantau daftar tamu, RSVP, dan ucapan secara realtime dari satu
+              panel administrasi.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           DASHBOARD STATISTIK
+      ======================================== -->
+
+      <section class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-slate-500">
+              Overview
+            </p>
+
+            <h2 class="section-title text-lg font-bold mt-1">
+              Statistik Undangan
+            </h2>
+          </div>
+
+          <div class="text-xs text-slate-500">Live Data</div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- TOTAL TAMU -->
+
+          <div class="glass stat-card rounded-2xl p-5">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider">
+                  Total Tamu
+                </p>
+
+                <p
+                  id="total-tamu"
+                  class="stat-number text-3xl font-extrabold text-white mt-2"
+                >
+                  0
+                </p>
+              </div>
+
+              <div
+                class="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/15 flex items-center justify-center"
+              >
+                <span class="text-lg">👥</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUDAH DIKIRIM -->
+
+          <div class="glass stat-card rounded-2xl p-5">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider">
+                  Sudah Dikirim
+                </p>
+
+                <p
+                  id="sudah-dikirim"
+                  class="stat-number text-3xl font-extrabold text-emerald-400 mt-2"
+                >
+                  0
+                </p>
+              </div>
+
+              <div
+                class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/15 flex items-center justify-center"
+              >
+                <span class="text-lg">✓</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BELUM DIKIRIM -->
+
+          <div class="glass stat-card rounded-2xl p-5">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider">
+                  Belum Dikirim
+                </p>
+
+                <p
+                  id="belum-dikirim"
+                  class="stat-number text-3xl font-extrabold text-slate-300 mt-2"
+                >
+                  0
+                </p>
+              </div>
+
+              <div
+                class="w-10 h-10 rounded-xl bg-slate-500/10 border border-slate-500/15 flex items-center justify-center"
+              >
+                <span class="text-lg">○</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TOTAL RSVP -->
+
+          <div class="glass stat-card rounded-2xl p-5">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider">
+                  Total RSVP
+                </p>
+
+                <p
+                  id="total-rsvp"
+                  class="stat-number text-3xl font-extrabold text-blue-400 mt-2"
+                >
+                  0
+                </p>
+              </div>
+
+              <div
+                class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/15 flex items-center justify-center"
+              >
+                <span class="text-lg">◈</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- HADIR -->
+
+          <div class="glass stat-card rounded-2xl p-5">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider">
+                  Hadir
+                </p>
+
+                <p
+                  id="total-hadir"
+                  class="stat-number text-3xl font-extrabold text-emerald-400 mt-2"
+                >
+                  0
+                </p>
+              </div>
+
+              <div
+                class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/15 flex items-center justify-center"
+              >
+                <span class="text-lg">♥</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TIDAK HADIR -->
+
+          <div class="glass stat-card rounded-2xl p-5">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider">
+                  Tidak Hadir
+                </p>
+
+                <p
+                  id="total-tidak-hadir"
+                  class="stat-number text-3xl font-extrabold text-red-400 mt-2"
+                >
+                  0
+                </p>
+              </div>
+
+              <div
+                class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/15 flex items-center justify-center"
+              >
+                <span class="text-lg">×</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- UCAPAN -->
+
+          <div class="glass stat-card rounded-2xl p-5">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider">
+                  Ucapan
+                </p>
+
+                <p
+                  id="total-ucapan"
+                  class="stat-number text-3xl font-extrabold text-purple-400 mt-2"
+                >
+                  0
+                </p>
+              </div>
+
+              <div
+                class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/15 flex items-center justify-center"
+              >
+                <span class="text-lg">💬</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           TAMBAH TAMU
+      ======================================== -->
+
+      <section class="mb-8">
+        <div class="glass purple-glow rounded-2xl overflow-hidden">
+          <div class="px-5 md:px-6 py-5 border-b border-white/[0.06]">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/15 flex items-center justify-center"
+              >
+                <span>＋</span>
+              </div>
+
+              <div>
+                <h2 class="text-lg font-bold text-white">Tambah Tamu</h2>
+
+                <p class="text-xs text-slate-500 mt-1">
+                  Tambahkan penerima undangan baru
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 md:p-6">
+            <div class="grid md:grid-cols-2 gap-4">
+              <!-- NAMA -->
+
+              <div>
+                <label
+                  class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2"
+                >
+                  Nama Tamu
+                </label>
+
+                <input
+                  type="text"
+                  id="namaTamu"
+                  placeholder="Contoh: Bapak Ahmad"
+                  class="admin-input w-full px-4 py-3 rounded-xl"
+                />
+              </div>
+
+              <!-- WHATSAPP -->
+
+              <div>
+                <label
+                  class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2"
+                >
+                  Nomor WhatsApp
+                </label>
+
+                <input
+                  type="text"
+                  id="nomorWA"
+                  placeholder="628123456789"
+                  class="admin-input w-full px-4 py-3 rounded-xl"
+                />
+              </div>
+            </div>
+
+            <button
+              type="button"
+              id="btnTambahTamu"
+              class="btn-primary mt-5 text-white px-5 py-3 rounded-xl font-semibold text-sm"
+            >
+              ＋ Tambah Tamu
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           DAFTAR TAMU
+      ======================================== -->
+
+      <section class="mb-8">
+        <div class="glass rounded-2xl overflow-hidden">
+          <!-- HEADER -->
+
+          <div class="p-5 md:p-6 border-b border-white/[0.06]">
+            <div
+              class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+            >
+              <div>
+                <p class="text-xs uppercase tracking-widest text-violet-400">
+                  Guest Database
+                </p>
+
+                <h2 class="section-title text-xl font-bold mt-1">
+                  Daftar Tamu
+                </h2>
+
+                <p class="text-xs text-slate-500 mt-1">
+                  Kelola nama dan link undangan tamu.
+                </p>
+              </div>
+
+              <!-- SEARCH -->
+
+              <div class="w-full md:w-80">
+                <input
+                  type="text"
+                  id="searchTamu"
+                  placeholder="🔎  Cari nama tamu..."
+                  class="admin-input w-full px-4 py-3 rounded-xl"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE -->
+
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[800px]">
+              <thead>
+                <tr>
+                  <th class="text-left px-6 py-4">No</th>
+
+                  <th class="text-left px-6 py-4">Nama Tamu</th>
+
+                  <th class="text-left px-6 py-4">Link Undangan</th>
+
+                  <th class="text-left px-6 py-4">Status</th>
+
+                  <th class="text-left px-6 py-4">Aksi</th>
+                </tr>
+              </thead>
+
+              <tbody id="guest-list">
+                <tr>
+                  <td colspan="5" class="text-center px-6 py-12 text-slate-500">
+                    Memuat data...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           RSVP
+      ======================================== -->
+
+      <section class="mb-8">
+        <div class="glass rounded-2xl overflow-hidden">
+          <div class="px-5 md:px-6 py-5 border-b border-white/[0.06]">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/15 flex items-center justify-center"
+              >
+                <span>◈</span>
+              </div>
+
+              <div>
+                <h2 class="text-lg font-bold text-white">RSVP Pernikahan</h2>
+
+                <p class="text-xs text-slate-500 mt-1">
+                  Daftar konfirmasi kehadiran tamu
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="rsvpList" class="p-5 md:p-6">
+            <div class="text-center text-slate-500 py-10">
+              Memuat data RSVP...
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           UCAPAN
+      ======================================== -->
+
+      <section class="mb-8">
+        <div class="glass rounded-2xl overflow-hidden">
+          <div class="px-5 md:px-6 py-5 border-b border-white/[0.06]">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/15 flex items-center justify-center"
+              >
+                <span>💬</span>
+              </div>
+
+              <div>
+                <h2 class="text-lg font-bold text-white">Ucapan & Doa</h2>
+
+                <p class="text-xs text-slate-500 mt-1">
+                  Pesan dan doa dari para tamu
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="ucapanList" class="p-5 md:p-6">
+            <div class="text-center text-slate-500 py-10">Memuat ucapan...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           FOOTER
+      ======================================== -->
+
+      <footer class="text-center py-6 border-t border-white/[0.05]">
+        <p class="text-xs text-slate-600">SECURE WEDDING MANAGEMENT SYSTEM</p>
+
+        <p class="text-xs text-slate-700 mt-1">
+          Carmud & Aulia • Admin Dashboard
+        </p>
+      </footer>
+    </main>
+
+    <!-- ========================================
+         ADMIN JS
     ======================================== -->
-
-      <div class="bg-white rounded-xl shadow overflow-hidden">
-        <!-- SEARCH -->
-
-        <div class="p-6 border-b">
-          <input
-            type="text"
-            id="searchTamu"
-            placeholder="🔎 Cari nama tamu..."
-            class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-400"
-          />
-        </div>
-
-        <div class="p-6 border-b">
-          <h2 class="text-lg font-bold">Daftar Tamu</h2>
-        </div>
-
-        <!-- TABLE -->
-
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-100">
-              <tr>
-                <th class="text-left px-6 py-4">No</th>
-
-                <th class="text-left px-6 py-4">Nama Tamu</th>
-
-                <th class="text-left px-6 py-4">Link Undangan</th>
-
-                <th class="text-left px-6 py-4">Status</th>
-
-                <th class="text-left px-6 py-4">Aksi</th>
-              </tr>
-            </thead>
-
-            <tbody id="guest-list">
-              <tr>
-                <td colspan="5" class="text-center px-6 py-8 text-gray-500">
-                  Memuat data...
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========================================
-     DATA RSVP
-======================================== -->
-
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="bg-white rounded-xl shadow p-6 mt-6">
-        <h2 class="text-lg font-bold text-gray-800 mb-4">RSVP Pernikahan</h2>
-
-        <div id="rsvpList">
-          <div class="text-center text-gray-400 py-8">Memuat data RSVP...</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========================================
-     DATA UCAPAN
-======================================== -->
-
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="bg-white rounded-xl shadow p-6 mt-6">
-        <h2 class="text-lg font-bold text-gray-800 mb-4">Ucapan & Doa</h2>
-
-        <div id="ucapanList">
-          <div class="text-center text-gray-400 py-8">Memuat ucapan...</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========================================
-       ADMIN JS
-  ======================================== -->
 
     <script src="admin.js"></script>
   </body>

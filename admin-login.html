@@ -5,142 +5,964 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Login Admin</title>
+    <title>Secure Login — Carmud & Aulia</title>
 
     <link rel="icon" href="data:," />
 
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+
+        /* =====================================
+           BACKGROUND IMAGE
+        ===================================== */
+
+        background-image: linear-gradient(
+            rgba(4, 5, 20, 0.58),
+            rgba(4, 5, 20, 0.78)
+          ),
+          url(form-login.jpg);
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+
+        min-height: 100vh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 30px 16px;
+
+        color: white;
+
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* =====================================
+         DARK OVERLAY
+      ===================================== */
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+
+        background: radial-gradient(
+            circle at 50% 35%,
+            rgba(124, 58, 237, 0.2),
+            transparent 35%
+          ),
+          linear-gradient(180deg, rgba(3, 7, 18, 0.15), rgba(3, 7, 18, 0.45));
+
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* =====================================
+         DECORATIVE GLOW
+      ===================================== */
+
+      .glow {
+        position: fixed;
+
+        width: 280px;
+        height: 280px;
+
+        border-radius: 50%;
+
+        background: rgba(124, 58, 237, 0.12);
+
+        filter: blur(80px);
+
+        pointer-events: none;
+
+        z-index: 0;
+      }
+
+      .glow-1 {
+        top: -100px;
+        left: -100px;
+      }
+
+      .glow-2 {
+        right: -100px;
+        bottom: -100px;
+
+        background: rgba(59, 130, 246, 0.1);
+      }
+
+      /* =====================================
+         LOGIN CARD
+      ===================================== */
+
+      .login-card {
+        width: 100%;
+        max-width: 420px;
+
+        position: relative;
+        z-index: 2;
+
+        background: linear-gradient(
+          145deg,
+          rgba(15, 23, 42, 0.82),
+          rgba(5, 8, 22, 0.9)
+        );
+
+        border: 1px solid rgba(167, 139, 250, 0.25);
+
+        border-radius: 24px;
+
+        padding: 34px 32px;
+
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55),
+          0 0 50px rgba(109, 40, 217, 0.12),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+
+        animation: cardAppear 0.7s ease forwards;
+      }
+
+      @keyframes cardAppear {
+        from {
+          opacity: 0;
+          transform: translateY(20px) scale(0.97);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* =====================================
+         TOP DECORATION
+      ===================================== */
+
+      .top-line {
+        width: 60px;
+        height: 3px;
+
+        margin: 0 auto 20px;
+
+        border-radius: 999px;
+
+        background: linear-gradient(90deg, #7c3aed, #a78bfa);
+
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.8);
+      }
+
+      /* =====================================
+         LOGIN ICON
+      ===================================== */
+
+      .login-icon {
+        width: 62px;
+        height: 62px;
+
+        margin: 0 auto 16px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 18px;
+
+        background: linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.3),
+          rgba(67, 56, 202, 0.15)
+        );
+
+        border: 1px solid rgba(167, 139, 250, 0.25);
+
+        box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+
+        font-size: 26px;
+      }
+
+      /* =====================================
+         TITLE
+      ===================================== */
+
+      .login-title {
+        text-align: center;
+
+        color: #ffffff;
+
+        font-size: 26px;
+
+        font-weight: 800;
+
+        letter-spacing: 0.03em;
+
+        margin: 0;
+      }
+
+      .login-subtitle {
+        text-align: center;
+
+        color: #94a3b8;
+
+        font-size: 13px;
+
+        margin-top: 7px;
+
+        margin-bottom: 25px;
+      }
+
+      .secure-label {
+        text-align: center;
+
+        color: #a78bfa;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        letter-spacing: 0.22em;
+
+        text-transform: uppercase;
+
+        margin-bottom: 22px;
+      }
+
+      /* =====================================
+         SECURITY BOX
+      ===================================== */
+
+      .security-box {
+        background: rgba(124, 58, 237, 0.07);
+
+        border: 1px solid rgba(139, 92, 246, 0.18);
+
+        border-radius: 14px;
+
+        padding: 13px 15px;
+
+        margin-bottom: 23px;
+      }
+
+      .security-title {
+        color: #c4b5fd;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        margin-bottom: 4px;
+      }
+
+      .security-text {
+        color: #94a3b8;
+
+        font-size: 11px;
+
+        line-height: 1.6;
+      }
+
+      /* =====================================
+         LABEL
+      ===================================== */
+
+      .form-label {
+        display: block;
+
+        color: #cbd5e1;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        margin-bottom: 8px;
+      }
+
+      /* =====================================
+         INPUT
+      ===================================== */
+
+      .login-input {
+        width: 100%;
+
+        height: 48px;
+
+        padding: 0 15px;
+
+        border-radius: 12px;
+
+        border: 1px solid rgba(148, 163, 184, 0.18);
+
+        background: rgba(2, 6, 23, 0.62);
+
+        color: #ffffff;
+
+        font-size: 13px;
+
+        transition: all 0.25s ease;
+      }
+
+      .login-input::placeholder {
+        color: #64748b;
+      }
+
+      .login-input:hover {
+        border-color: rgba(139, 92, 246, 0.3);
+      }
+
+      .login-input:focus {
+        outline: none;
+
+        border-color: #8b5cf6;
+
+        background: rgba(2, 6, 23, 0.82);
+
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1),
+          0 0 20px rgba(124, 58, 237, 0.08);
+      }
+
+      /* =====================================
+         LOGIN BUTTON
+      ===================================== */
+
+      .login-button {
+        width: 100%;
+
+        height: 48px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        margin-top: 5px;
+
+        color: white;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        background: linear-gradient(135deg, #7c3aed, #6d28d9);
+
+        box-shadow: 0 10px 25px rgba(109, 40, 217, 0.3);
+
+        transition: all 0.25s ease;
+      }
+
+      .login-button:hover {
+        transform: translateY(-2px);
+
+        box-shadow: 0 14px 35px rgba(109, 40, 217, 0.42);
+      }
+
+      .login-button:active {
+        transform: translateY(0);
+      }
+
+      .login-button:disabled {
+        opacity: 0.55;
+
+        cursor: not-allowed;
+
+        transform: none;
+      }
+
+      /* =====================================
+         STATUS
+      ===================================== */
+
+      #loginStatus {
+        border-radius: 12px !important;
+
+        background: rgba(30, 41, 59, 0.75) !important;
+
+        border: 1px solid rgba(139, 92, 246, 0.2) !important;
+
+        color: #cbd5e1 !important;
+
+        font-size: 12px !important;
+      }
+
+      /* =====================================
+         ERROR
+      ===================================== */
+
+      #loginError {
+        color: #fca5a5 !important;
+
+        font-size: 12px;
+
+        line-height: 1.5;
+      }
+
+      /* =====================================
+         FOOTER
+      ===================================== */
+
+      .login-footer {
+        text-align: center;
+
+        color: #64748b;
+
+        font-size: 10px;
+
+        line-height: 1.6;
+
+        margin-top: 20px;
+      }
+
+      .login-footer span {
+        color: #a78bfa;
+      }
+
+      /* =====================================
+         MOBILE
+      ===================================== */
+
+      @media (max-width: 480px) {
+        body {
+          padding: 20px 14px;
+        }
+
+        .login-card {
+          padding: 28px 22px;
+
+          border-radius: 20px;
+        }
+
+        .login-title {
+          font-size: 23px;
+        }
+      }
+    </style>
   </head>
 
-  <body class="bg-gray-100 min-h-screen flex items-center justify-center px-4">
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-      <!-- HEADER -->
+  <body>
+    <!-- BACKGROUND GLOW -->
 
-      <div class="text-center mb-8">
-        <div
-          class="w-16 h-16 bg-slate-800 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
-        >
-          🔐
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <!-- ========================================
+         LOGIN CARD
+    ======================================== -->
+
+    <div class="login-card">
+      <!-- ICON -->
+
+      <div class="login-icon">🔐</div>
+
+      <div class="top-line"></div>
+
+      <!-- TITLE -->
+
+      <h1 class="login-title">ADMIN LOGIN</h1>
+
+      <p class="login-subtitle">Carmud & Aulia Wedding</p>
+
+      <div class="secure-label">Secure Management System</div>
+
+      <!-- ========================================
+           SECURITY INFORMATION
+      ======================================== -->
+
+      <div class="security-box">
+        <div class="security-title">📍 Verifikasi Lokasi</div>
+
+        <div class="security-text">
+          Akses lokasi perangkat diperlukan sebagai bagian dari verifikasi
+          keamanan sebelum masuk ke Dashboard Admin.
         </div>
-
-        <h1 class="text-2xl font-bold text-gray-800">Admin Panel</h1>
-
-        <p class="text-gray-500 mt-2">Silakan login untuk melanjutkan</p>
       </div>
 
-      <!-- FORM -->
+      <!-- ========================================
+           FORM LOGIN
+      ======================================== -->
 
       <form id="loginForm">
         <!-- USERNAME -->
 
-        <div class="mb-4">
-          <label class="block text-sm font-semibold text-gray-700 mb-2">
-            Username
-          </label>
+        <div class="mb-5">
+          <label for="username" class="form-label"> Username </label>
 
           <input
             type="text"
             id="username"
             placeholder="Masukkan username"
             autocomplete="username"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+            class="login-input"
           />
         </div>
 
         <!-- PASSWORD -->
 
-        <div class="mb-6">
-          <label class="block text-sm font-semibold text-gray-700 mb-2">
-            Password
-          </label>
+        <div class="mb-5">
+          <label for="password" class="form-label"> Password </label>
 
           <input
             type="password"
             id="password"
             placeholder="Masukkan password"
             autocomplete="current-password"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+            class="login-input"
           />
         </div>
 
+        <!-- STATUS -->
+
+        <div id="loginStatus" class="hidden rounded-lg p-3 text-sm mb-4"></div>
+
         <!-- ERROR -->
 
-        <p
-          id="loginError"
-          class="hidden text-red-500 text-sm text-center mb-4"
-        ></p>
+        <p id="loginError" class="hidden text-center mb-4"></p>
 
         <!-- BUTTON -->
 
-        <button
-          type="submit"
-          id="btnLogin"
-          class="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-lg transition"
-        >
-          🔐 Login
+        <button type="submit" id="btnLogin" class="login-button">
+          🔐 Login Securely
         </button>
       </form>
+
+      <!-- FOOTER -->
+
+      <div class="login-footer">
+        🔒 Protected administrator area
+        <br />
+
+        <span>Location verification enabled</span>
+      </div>
     </div>
 
+    <!-- ===================================================== -->
     <!-- LOGIN SCRIPT -->
+    <!-- ===================================================== -->
 
     <script>
-      // ========================================
-      // API
-      // ========================================
+      // =====================================================
+      // API APPS SCRIPT
+      // =====================================================
 
       const GUEST_API =
-        "https://script.google.com/macros/s/AKfycbxsoD7mXaD84o6aE6Cd5c4SHA3wXoTXFDmaB1-_KG9e8C72tb7yTjl1HiNELhV196vHOA/exec";
+        "https://script.google.com/macros/s/AKfycbwTnqFyV4DbCstnwdfk6mch1vV_e3ZBTTdZQF9O39fKt99jjBvPmUsk0rnac-AXo-1vaA/exec";
 
-      // ========================================
-      // FORM
-      // ========================================
+      // =====================================================
+      // ELEMENT
+      // =====================================================
 
       const loginForm = document.getElementById("loginForm");
+
+      const usernameInput = document.getElementById("username");
+
+      const passwordInput = document.getElementById("password");
+
+      const loginError = document.getElementById("loginError");
+
+      const loginStatus = document.getElementById("loginStatus");
+
+      const btnLogin = document.getElementById("btnLogin");
+
+      // =====================================================
+      // TAMPILKAN STATUS
+      // =====================================================
+
+      function tampilkanStatus(pesan, tipe = "info") {
+        loginStatus.classList.remove(
+          "hidden",
+          "bg-blue-50",
+          "border-blue-200",
+          "text-blue-700",
+          "bg-green-50",
+          "border-green-200",
+          "text-green-700",
+          "bg-red-50",
+          "border-red-200",
+          "text-red-700"
+        );
+
+        loginStatus.classList.add("border");
+
+        if (tipe === "success") {
+          loginStatus.classList.add(
+            "bg-green-50",
+            "border-green-200",
+            "text-green-700"
+          );
+        } else if (tipe === "error") {
+          loginStatus.classList.add(
+            "bg-red-50",
+            "border-red-200",
+            "text-red-700"
+          );
+        } else {
+          loginStatus.classList.add(
+            "bg-blue-50",
+            "border-blue-200",
+            "text-blue-700"
+          );
+        }
+
+        loginStatus.textContent = pesan;
+      }
+
+      // =====================================================
+      // SEMBUNYIKAN STATUS
+      // =====================================================
+
+      function sembunyikanStatus() {
+        loginStatus.classList.add("hidden");
+      }
+
+      // =====================================================
+      // TAMPILKAN ERROR
+      // =====================================================
+
+      function tampilkanError(pesan) {
+        loginError.textContent = pesan;
+
+        loginError.classList.remove("hidden");
+      }
+
+      // =====================================================
+      // HAPUS ERROR
+      // =====================================================
+
+      function hapusError() {
+        loginError.textContent = "";
+
+        loginError.classList.add("hidden");
+      }
+
+      // =====================================================
+      // DETEKSI PERANGKAT
+      // =====================================================
+
+      function deteksiPerangkat() {
+        const userAgent = navigator.userAgent || "";
+
+        const platform = navigator.platform || "";
+
+        // Android
+        if (/Android/i.test(userAgent)) {
+          return "Android";
+        }
+
+        // iPhone
+        if (/iPhone/i.test(userAgent)) {
+          return "iPhone";
+        }
+
+        // iPad
+        if (/iPad/i.test(userAgent)) {
+          return "iPad";
+        }
+
+        // Mac
+        if (/Macintosh|MacIntel|MacPPC|Mac68K/i.test(platform)) {
+          return "Mac";
+        }
+
+        // Windows
+        if (/Win32|Win64|Windows/i.test(platform)) {
+          return "Windows PC";
+        }
+
+        // Linux
+        if (/Linux/i.test(platform)) {
+          return "Linux";
+        }
+
+        return "Perangkat Tidak Dikenal";
+      }
+
+      // =====================================================
+      // DETEKSI BROWSER
+      // =====================================================
+
+      function deteksiBrowser() {
+        const userAgent = navigator.userAgent || "";
+
+        if (/Edg/i.test(userAgent)) {
+          return "Microsoft Edge";
+        }
+
+        if (/OPR|Opera/i.test(userAgent)) {
+          return "Opera";
+        }
+
+        if (/Chrome/i.test(userAgent) && !/Edg/i.test(userAgent)) {
+          return "Google Chrome";
+        }
+
+        if (/Firefox/i.test(userAgent)) {
+          return "Mozilla Firefox";
+        }
+
+        if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
+          return "Safari";
+        }
+
+        return "Browser Tidak Dikenal";
+      }
+
+      // =====================================================
+      // MINTA LOKASI
+      // =====================================================
+
+      function ambilLokasi() {
+        return new Promise(function (resolve, reject) {
+          // Browser tidak mendukung GPS
+          if (!navigator.geolocation) {
+            reject(new Error("Browser ini tidak mendukung akses lokasi."));
+
+            return;
+          }
+
+          tampilkanStatus("📍 Meminta izin lokasi perangkat...", "info");
+
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              const latitude = position.coords.latitude;
+
+              const longitude = position.coords.longitude;
+
+              const accuracy = position.coords.accuracy;
+
+              console.log("Latitude:", latitude);
+
+              console.log("Longitude:", longitude);
+
+              console.log("Accuracy:", accuracy);
+
+              resolve({
+                latitude: latitude,
+
+                longitude: longitude,
+
+                accuracy: accuracy,
+              });
+            },
+
+            function (error) {
+              console.error("Geolocation error:", error);
+
+              let pesan = "Lokasi perangkat wajib diizinkan.";
+
+              if (error.code === 1) {
+                pesan =
+                  "❌ Akses lokasi ditolak. Login tidak dapat dilanjutkan.";
+              } else if (error.code === 2) {
+                pesan =
+                  "❌ Lokasi perangkat tidak tersedia. Pastikan GPS/lokasi perangkat aktif.";
+              } else if (error.code === 3) {
+                pesan = "❌ Waktu pengambilan lokasi habis. Silakan coba lagi.";
+              }
+
+              reject(new Error(pesan));
+            },
+
+            {
+              enableHighAccuracy: true,
+
+              timeout: 15000,
+
+              maximumAge: 0,
+            }
+          );
+        });
+      }
+
+      // =====================================================
+      // REVERSE GEOCODING
+      // KOORDINAT → KOTA
+      // =====================================================
+
+      async function cariAlamat(latitude, longitude) {
+        try {
+          tampilkanStatus("🌍 Menentukan kota dari lokasi...", "info");
+
+          const url =
+            "https://nominatim.openstreetmap.org/reverse" +
+            "?format=json" +
+            "&lat=" +
+            encodeURIComponent(latitude) +
+            "&lon=" +
+            encodeURIComponent(longitude) +
+            "&zoom=18" +
+            "&addressdetails=1";
+
+          const response = await fetch(url, {
+            method: "GET",
+
+            headers: {
+              Accept: "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Reverse geocoding gagal.");
+          }
+
+          const result = await response.json();
+
+          console.log("Reverse geocoding:", result);
+
+          const address = result.address || {};
+
+          // Kota
+          const kota =
+            address.city ||
+            address.town ||
+            address.municipality ||
+            address.village ||
+            address.county ||
+            "";
+
+          // Provinsi
+          const provinsi = address.state || "";
+
+          // Negara
+          const negara = address.country || "";
+
+          return {
+            kota: kota,
+
+            provinsi: provinsi,
+
+            negara: negara,
+          };
+        } catch (error) {
+          console.error("Gagal mendapatkan alamat:", error);
+
+          // Login tetap bisa dilanjutkan
+          // karena koordinat GPS adalah data utama
+
+          return {
+            kota: "Tidak diketahui",
+
+            provinsi: "Tidak diketahui",
+
+            negara: "Tidak diketahui",
+          };
+        }
+      }
+
+      // =====================================================
+      // LOGIN
+      // =====================================================
 
       loginForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        const username = document.getElementById("username").value.trim();
+        // =================================================
+        // AMBIL INPUT
+        // =================================================
 
-        const password = document.getElementById("password").value;
+        const username = usernameInput.value.trim();
 
-        const error = document.getElementById("loginError");
+        const password = passwordInput.value;
 
-        const button = document.getElementById("btnLogin");
+        // =================================================
+        // RESET
+        // =================================================
 
-        // ========================================
-        // RESET ERROR
-        // ========================================
+        hapusError();
 
-        error.classList.add("hidden");
+        sembunyikanStatus();
 
-        error.textContent = "";
-
-        // ========================================
+        // =================================================
         // VALIDASI
-        // ========================================
+        // =================================================
 
         if (!username || !password) {
-          error.textContent = "Username dan password wajib diisi.";
-
-          error.classList.remove("hidden");
+          tampilkanError("Username dan password wajib diisi.");
 
           return;
         }
 
-        // ========================================
+        // =================================================
         // DISABLE BUTTON
-        // ========================================
+        // =================================================
 
-        button.disabled = true;
+        btnLogin.disabled = true;
 
-        button.textContent = "⏳ Memeriksa login...";
+        btnLogin.textContent = "⏳ Memverifikasi lokasi...";
 
         try {
-          // ========================================
-          // LOGIN KE APPS SCRIPT
-          // ========================================
+          // =================================================
+          // 1. AMBIL LOKASI
+          // =================================================
+
+          const lokasi = await ambilLokasi();
+
+          console.log("Lokasi berhasil:", lokasi);
+
+          // =================================================
+          // 2. CARI KOTA
+          // =================================================
+
+          const alamat = await cariAlamat(lokasi.latitude, lokasi.longitude);
+
+          console.log("Alamat:", alamat);
+
+          // =================================================
+          // 3. DETEKSI PERANGKAT
+          // =================================================
+
+          const perangkat = deteksiPerangkat();
+
+          // =================================================
+          // 4. DETEKSI BROWSER
+          // =================================================
+
+          const browser = deteksiBrowser();
+
+          // =================================================
+          // 5. GOOGLE MAPS
+          // =================================================
+
+          const mapsLink =
+            "https://www.google.com/maps?q=" +
+            lokasi.latitude +
+            "," +
+            lokasi.longitude;
+
+          console.log("Maps:", mapsLink);
+
+          // =================================================
+          // 6. KIRIM LOGIN KE APPS SCRIPT
+          // =================================================
+
+          tampilkanStatus("🔐 Memverifikasi akun...", "info");
+
+          btnLogin.textContent = "⏳ Memproses login...";
 
           const response = await fetch(GUEST_API, {
             method: "POST",
@@ -151,52 +973,138 @@
               username: username,
 
               password: password,
+
+              // -------------------------------
+              // LOKASI
+              // -------------------------------
+
+              latitude: lokasi.latitude,
+
+              longitude: lokasi.longitude,
+
+              accuracy: lokasi.accuracy,
+
+              // -------------------------------
+              // ALAMAT
+              // -------------------------------
+
+              kota: alamat.kota,
+
+              provinsi: alamat.provinsi,
+
+              negara: alamat.negara,
+
+              // -------------------------------
+              // PERANGKAT
+              // -------------------------------
+
+              perangkat: perangkat,
+
+              browser: browser,
+
+              // -------------------------------
+              // USER AGENT
+              // -------------------------------
+
+              userAgent: navigator.userAgent,
+
+              // -------------------------------
+              // LINK MAPS
+              // -------------------------------
+
+              mapsLink: mapsLink,
             }),
           });
+
+          // =================================================
+          // CEK HTTP
+          // =================================================
+
+          if (!response.ok) {
+            throw new Error("HTTP Error " + response.status);
+          }
+
+          // =================================================
+          // RESPONSE APPS SCRIPT
+          // =================================================
 
           const result = await response.json();
 
           console.log("Response login:", result);
 
-          // ========================================
+          // =================================================
           // LOGIN BERHASIL
-          // ========================================
+          // =================================================
 
           if (result.result === "success" && result.token) {
-            // Simpan token
+            tampilkanStatus(
+              "✅ Login berhasil. Membuka Dashboard...",
+              "success"
+            );
+
+            // =============================================
+            // SIMPAN TOKEN
+            // =============================================
+
             sessionStorage.setItem("adminToken", result.token);
 
-            // Simpan username
-            sessionStorage.setItem("adminUsername", username);
+            // =============================================
+            // SIMPAN USERNAME
+            // =============================================
 
-            // Masuk admin
-            window.location.href = "admin.html";
+            sessionStorage.setItem(
+              "adminUsername",
+              result.username || username
+            );
+
+            // =============================================
+            // SIMPAN INFO LOKASI
+            // Opsional untuk kebutuhan dashboard
+            // =============================================
+
+            sessionStorage.setItem("adminKota", alamat.kota);
+
+            sessionStorage.setItem("adminLatitude", String(lokasi.latitude));
+
+            sessionStorage.setItem("adminLongitude", String(lokasi.longitude));
+
+            // =============================================
+            // MASUK DASHBOARD
+            // =============================================
+
+            setTimeout(function () {
+              window.location.replace("admin.html");
+            }, 500);
 
             return;
           }
 
-          // ========================================
+          // =================================================
           // LOGIN GAGAL
-          // ========================================
+          // =================================================
 
-          error.textContent = result.message || "Username atau password salah.";
+          tampilkanError(result.message || "Username atau password salah.");
+        } catch (error) {
+          console.error("Error login:", error);
 
-          error.classList.remove("hidden");
-        } catch (err) {
-          console.error("Error login:", err);
+          // =================================================
+          // JIKA LOKASI DITOLAK
+          // =================================================
 
-          error.textContent = "Tidak dapat terhubung ke server.";
-
-          error.classList.remove("hidden");
+          if (error.message.includes("lokasi")) {
+            tampilkanError(error.message);
+          } else {
+            tampilkanError("Tidak dapat terhubung ke server Apps Script.");
+          }
         }
 
-        // ========================================
+        // =================================================
         // ENABLE BUTTON
-        // ========================================
+        // =================================================
 
-        button.disabled = false;
+        btnLogin.disabled = false;
 
-        button.textContent = "🔐 Login";
+        btnLogin.textContent = "🔐 Login";
       });
     </script>
   </body>
