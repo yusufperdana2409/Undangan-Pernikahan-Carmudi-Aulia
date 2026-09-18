@@ -1964,6 +1964,1252 @@
         },
       };
     </script>
+
+    <style>
+      /* =========================================================
+     GLOBAL MOBILE RESPONSIVE FIX
+     Wedding Invitation
+  ========================================================= */
+
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      /* Semua section utama */
+
+      section,
+      main,
+      header,
+      footer {
+        box-sizing: border-box;
+      }
+
+      /* =========================================================
+     MOBILE PORTRAIT
+  ========================================================= */
+
+      @media (max-width: 767px) {
+        /* -----------------------------------------------
+       GLOBAL
+    ----------------------------------------------- */
+
+        body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        /* -----------------------------------------------
+       SEMUA SECTION UTAMA
+    ----------------------------------------------- */
+
+        #home,
+        #ayat-section,
+        #couple,
+        #event,
+        #gallery,
+        #wishes,
+        #gift {
+          width: 100% !important;
+
+          max-width: none !important;
+
+          min-width: 0 !important;
+
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+
+          overflow-x: hidden !important;
+        }
+
+        /* -----------------------------------------------
+       CONTAINER YANG MUNGKIN MEMBAWA WIDTH DESKTOP
+    ----------------------------------------------- */
+
+        #home > *,
+        #ayat-section > *,
+        #couple > *,
+        #event > *,
+        #gallery > *,
+        #wishes > *,
+        #gift > * {
+          max-width: 100%;
+
+          box-sizing: border-box;
+        }
+
+        /* -----------------------------------------------
+       TEKS AGAR TIDAK KELUAR LAYAR
+    ----------------------------------------------- */
+
+        h1,
+        h2,
+        h3,
+        h4,
+        p,
+        span {
+          max-width: 100%;
+
+          overflow-wrap: break-word;
+        }
+
+        /* -----------------------------------------------
+       NAMA MEMPELAI HOME
+    ----------------------------------------------- */
+
+        #home h1 {
+          width: 100%;
+
+          max-width: 100%;
+
+          padding-left: 12px;
+          padding-right: 12px;
+
+          font-size: clamp(3.4rem, 14vw, 5rem);
+
+          line-height: 0.95;
+        }
+
+        /* -----------------------------------------------
+       TANGGAL HOME
+    ----------------------------------------------- */
+
+        #home .home-date {
+          width: 100%;
+
+          padding-left: 12px;
+          padding-right: 12px;
+
+          font-size: 11px;
+
+          letter-spacing: 0.14em;
+
+          text-align: center;
+        }
+
+        /* -----------------------------------------------
+       SAVE THE DATE
+    ----------------------------------------------- */
+
+        #home .premium-save-date {
+          width: min(88%, 300px);
+
+          min-width: 0;
+
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        /* -----------------------------------------------
+       GUEST
+    ----------------------------------------------- */
+
+        #home section {
+          width: 100%;
+
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+
+        #guest-name-hero {
+          font-size: 2rem;
+
+          line-height: 1.05;
+
+          max-width: 100%;
+        }
+
+        /* =================================================
+       CERMIN / AYAT
+    ================================================= */
+
+        #ayat-section {
+          min-height: auto !important;
+
+          height: auto !important;
+        }
+
+        #ayat-section > div {
+          max-width: 100% !important;
+        }
+
+        /* Jangan paksa cermin menjadi terlalu lebar */
+
+        #ayat-section .aspect-\[941\/1672\] {
+          width: 100% !important;
+
+          max-width: 100% !important;
+
+          height: auto;
+        }
+
+        #ayat-section img {
+          max-width: 100%;
+
+          height: auto;
+        }
+
+        /* =================================================
+       COUPLE / MEMPELAI
+    ================================================= */
+
+        #couple {
+          padding-left: 16px !important;
+          padding-right: 16px !important;
+        }
+
+        #couple img {
+          max-width: 100%;
+
+          height: auto;
+        }
+
+        #couple h1,
+        #couple h2,
+        #couple h3 {
+          max-width: 100%;
+
+          overflow-wrap: break-word;
+        }
+
+        /* =================================================
+       EVENT
+    ================================================= */
+
+        #event {
+          padding-left: 12px !important;
+          padding-right: 12px !important;
+        }
+
+        #event > div {
+          max-width: 100%;
+        }
+
+        /* Countdown */
+
+        .countdown-grid {
+          width: 100% !important;
+
+          max-width: 100% !important;
+
+          padding-left: 4px;
+          padding-right: 4px;
+        }
+
+        /* =================================================
+       GALLERY
+    ================================================= */
+
+        #gallery {
+          padding-left: 12px !important;
+          padding-right: 12px !important;
+        }
+
+        #gallery img {
+          max-width: 100%;
+        }
+
+        /* =================================================
+       WISHES
+    ================================================= */
+
+        #wishes {
+          padding-left: 12px !important;
+          padding-right: 12px !important;
+        }
+
+        #wishes .max-w-3xl {
+          width: 100% !important;
+
+          max-width: 100% !important;
+        }
+
+        /* =================================================
+       GIFT
+    ================================================= */
+
+        #gift {
+          padding-left: 12px !important;
+          padding-right: 12px !important;
+        }
+
+        #gift .max-w-xl,
+        #gift .max-w-md {
+          width: 100% !important;
+
+          max-width: 100% !important;
+        }
+      }
+
+      /* =========================================================
+     HP SANGAT KECIL
+  ========================================================= */
+
+      @media (max-width: 380px) {
+        #home h1 {
+          font-size: 3.1rem;
+        }
+
+        #home .home-date {
+          font-size: 10px;
+
+          letter-spacing: 0.1em;
+        }
+
+        #guest-name-hero {
+          font-size: 1.8rem;
+        }
+      }
+
+      /* =========================================================
+     HP LANDSCAPE
+  ========================================================= */
+
+      @media (max-height: 500px) and (orientation: landscape) {
+        #home,
+        #ayat-section,
+        #couple,
+        #event,
+        #gallery,
+        #wishes,
+        #gift {
+          width: 100% !important;
+
+          max-width: none !important;
+        }
+      }
+    </style>
+    <style>
+      @media (max-width: 767px) {
+        #home .home-title-main {
+          transform: translateX(80px);
+        }
+
+        #home .home-title-top {
+          transform: translateX(-70px);
+        }
+      }
+    </style>
+
+    <style>
+      /* ============================================================
+     FINAL PREMIUM MOBILE FIX
+     Disesuaikan khusus dengan struktur file sekarang
+     Sections:
+     CERMIN → MEMPELAI → EVENT → GALLERY
+     ============================================================ */
+
+      /* ============================================================
+     GLOBAL MOBILE
+     ============================================================ */
+
+      @media (max-width: 767px) {
+        html,
+        body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden !important;
+        }
+
+        body {
+          position: relative;
+        }
+
+        section,
+        main,
+        article,
+        header,
+        footer,
+        div {
+          box-sizing: border-box;
+        }
+
+        /* ==========================================================
+       1. CERMIN / AYAT
+       ========================================================== */
+
+        #ayat-section {
+          width: 100% !important;
+          max-width: 100% !important;
+          min-width: 0 !important;
+
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+
+          overflow: hidden !important;
+        }
+
+        /*
+       Cermin mengikuti ukuran HP.
+       Tidak boleh melebar melebihi viewport.
+    */
+
+        #ayat-section .mirror-stage {
+          width: 100% !important;
+          max-width: 420px !important;
+
+          margin-left: auto !important;
+          margin-right: auto !important;
+
+          height: auto !important;
+
+          /*
+        Tetap mempertahankan animasi masuk.
+        Posisi awal sedikit turun.
+      */
+          transform: translateY(28px) scale(0.97) !important;
+
+          transform-origin: center center;
+
+          overflow: visible !important;
+        }
+
+        /*
+       Setelah animasi aktif, cermin kembali normal.
+    */
+
+        #ayat-section.ayat-visible .mirror-stage {
+          transform: translateY(0) scale(1) !important;
+        }
+
+        /*
+       Background kaca harus memenuhi frame,
+       tetapi tidak boleh menyebabkan horizontal overflow.
+    */
+
+        #ayat-section .mirror-stage > div:first-child,
+        #ayat-section .mirror-stage img {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        #ayat-section .mirror-stage img {
+          height: 100% !important;
+
+          object-fit: cover !important;
+          object-position: center center !important;
+
+          display: block;
+        }
+
+        /*
+       Quote di dalam cermin
+    */
+
+        #ayat-section #quote-container {
+          left: 50% !important;
+          top: 55% !important;
+
+          width: min(130px, 62vw) !important;
+          max-width: 62vw !important;
+
+          transform: translate(-50%, -50%) translateY(18px) !important;
+
+          padding: 0 !important;
+
+          box-sizing: border-box !important;
+        }
+
+        #ayat-section.ayat-visible #quote-container {
+          transform: translate(-50%, -50%) translateY(0) !important;
+        }
+
+        #ayat-section #quote-text {
+          font-size: 9px !important;
+          line-height: 1.6 !important;
+
+          overflow-wrap: break-word !important;
+        }
+
+        #ayat-section #quote-source {
+          font-size: 8px !important;
+          line-height: 1.4 !important;
+        }
+
+        /* ==========================================================
+       2. MEMPELAI / COUPLE
+       ========================================================== */
+
+        #couple {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          padding-left: 14px !important;
+          padding-right: 14px !important;
+
+          padding-top: 60px !important;
+          padding-bottom: 60px !important;
+
+          overflow: hidden !important;
+        }
+
+        /*
+       Container utama couple
+    */
+
+        #couple > .relative.z-10 {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+
+        /*
+       Header Mempelai
+    */
+
+        #couple header {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          margin-left: auto !important;
+          margin-right: auto !important;
+
+          margin-bottom: 32px !important;
+
+          padding-left: 4px !important;
+          padding-right: 4px !important;
+        }
+
+        #couple header p {
+          max-width: 100% !important;
+        }
+
+        #couple header h2 {
+          font-size: 2.25rem !important;
+          line-height: 1.1 !important;
+
+          margin-bottom: 14px !important;
+        }
+
+        #couple header > p:last-child {
+          font-size: 11px !important;
+          line-height: 1.7 !important;
+
+          max-width: 340px !important;
+
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+
+        /*
+       Couple cards
+       Tetap 1 kolom di HP.
+    */
+
+        #couple .grid.grid-cols-1 {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          grid-template-columns: minmax(0, 1fr) !important;
+
+          gap: 22px !important;
+        }
+
+        #couple article {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          min-width: 0 !important;
+        }
+
+        /*
+       Gold frame
+    */
+
+        #couple article > div {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          border-radius: 23px !important;
+          padding: 4px !important;
+        }
+
+        /*
+       Card bagian dalam
+    */
+
+        #couple article > div > div {
+          width: 100% !important;
+
+          border-radius: 19px !important;
+        }
+
+        /*
+       FOTO MEMPELAI
+       4:5 tetap dipertahankan supaya foto tidak gepeng.
+    */
+
+        #couple article img {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          height: auto !important;
+
+          aspect-ratio: 4 / 5 !important;
+
+          object-fit: cover !important;
+          object-position: center center !important;
+
+          display: block;
+        }
+
+        /*
+       Informasi nama
+    */
+
+        #couple article h3 {
+          font-size: 2.35rem !important;
+
+          line-height: 1.05 !important;
+
+          max-width: 100% !important;
+
+          overflow-wrap: anywhere !important;
+
+          margin-bottom: 12px !important;
+        }
+
+        /*
+       Area informasi kartu
+    */
+
+        #couple article .text-center.px-6 {
+          padding-left: 14px !important;
+          padding-right: 14px !important;
+
+          padding-top: 22px !important;
+          padding-bottom: 22px !important;
+        }
+
+        /*
+       Social media
+    */
+
+        #couple article .flex.justify-center.gap-3 {
+          gap: 8px !important;
+
+          margin-bottom: 12px !important;
+        }
+
+        /*
+       Ornamen bulat di atas card
+    */
+
+        #couple article .absolute.top-0.left-1\/2 {
+          width: 34px !important;
+          height: 34px !important;
+
+          border-width: 3px !important;
+
+          font-size: 11px !important;
+        }
+
+        /*
+       Nama orang tua
+    */
+
+        #couple article p {
+          overflow-wrap: anywhere !important;
+        }
+
+        #couple article p:last-child {
+          font-size: 12px !important;
+          line-height: 1.5 !important;
+        }
+
+        /*
+       Quran banner setelah kartu
+    */
+
+        #couple aside {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+
+        #couple aside > div {
+          width: 100% !important;
+        }
+
+        #couple aside > div > div {
+          padding-left: 16px !important;
+          padding-right: 16px !important;
+
+          padding-top: 24px !important;
+          padding-bottom: 24px !important;
+        }
+
+        #couple aside p {
+          max-width: 100% !important;
+
+          overflow-wrap: break-word !important;
+        }
+
+        /*
+       Arabic text
+    */
+
+        #couple aside p[dir="rtl"] {
+          font-size: 15px !important;
+          line-height: 2 !important;
+        }
+
+        /* ==========================================================
+       3. EVENT
+       ========================================================== */
+
+        #event {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          padding-left: 12px !important;
+          padding-right: 12px !important;
+
+          padding-top: 60px !important;
+          padding-bottom: 60px !important;
+
+          overflow: hidden !important;
+        }
+
+        /*
+       Container event utama
+    */
+
+        #event > .relative.z-10 {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          padding-left: 4px !important;
+          padding-right: 4px !important;
+        }
+
+        /*
+       Header Event
+    */
+
+        #event header {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          margin-bottom: 30px !important;
+        }
+
+        #event header > div:first-child {
+          gap: 10px !important;
+          margin-bottom: 14px !important;
+        }
+
+        #event header > div:first-child span {
+          width: 45px !important;
+        }
+
+        #event header p:first-of-type {
+          font-size: 1.55rem !important;
+
+          line-height: 1.2 !important;
+        }
+
+        #event header h2 {
+          font-size: 2.2rem !important;
+
+          line-height: 1.1 !important;
+
+          margin-top: 4px !important;
+          margin-bottom: 14px !important;
+
+          white-space: normal !important;
+        }
+
+        #event header p:last-child {
+          font-size: 11px !important;
+          line-height: 1.7 !important;
+
+          max-width: 330px !important;
+
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+
+        /*
+       Countdown outer container
+    */
+
+        #event #countdown-container {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+
+        /*
+       Gold frame countdown
+    */
+
+        #event #countdown-container > div {
+          width: 100% !important;
+
+          border-radius: 23px !important;
+          padding: 2px !important;
+        }
+
+        /*
+       Countdown card utama
+    */
+
+        #event #countdown-container > div > div {
+          width: 100% !important;
+
+          border-radius: 21px !important;
+
+          padding-left: 12px !important;
+          padding-right: 12px !important;
+
+          padding-top: 26px !important;
+          padding-bottom: 26px !important;
+        }
+
+        /*
+       Tanggal besar
+    */
+
+        #event #countdown-container .relative.z-10 {
+          max-width: 100% !important;
+        }
+
+        #event
+          #countdown-container
+          .relative.z-10
+          > .flex.items-center.justify-center.gap-5 {
+          gap: 10px !important;
+        }
+
+        /*
+       Angka 24
+    */
+
+        #event #countdown-container .relative.z-10 span.font-serif.font-bold {
+          font-size: 4.5rem !important;
+
+          line-height: 0.9 !important;
+        }
+
+        /*
+       Garis kiri kanan tanggal
+    */
+
+        #event #countdown-container .relative.z-10 span.w-12 {
+          width: 34px !important;
+        }
+
+        /*
+       Countdown title
+    */
+
+        #event .countdown-grid {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+
+          gap: 6px !important;
+
+          grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        }
+
+        /*
+       Countdown cards
+    */
+
+        #event .countdown-card {
+          width: 100% !important;
+          min-width: 0 !important;
+
+          height: 72px !important;
+
+          border-radius: 11px !important;
+        }
+
+        #event .countdown-number {
+          font-size: 1.45rem !important;
+
+          line-height: 1 !important;
+        }
+
+        #event .countdown-label {
+          font-size: 6px !important;
+
+          letter-spacing: 0.08em !important;
+
+          white-space: nowrap !important;
+
+          margin-top: 5px !important;
+        }
+
+        /*
+       Event cards
+       Akad + Resepsi
+    */
+
+        #event > .relative.z-10 > .grid {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          grid-template-columns: minmax(0, 1fr) !important;
+
+          gap: 22px !important;
+        }
+
+        #event article {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          min-width: 0 !important;
+        }
+
+        /*
+       Foto event
+    */
+
+        #event article img {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          height: auto !important;
+
+          object-fit: cover !important;
+        }
+
+        /*
+       Isi informasi event
+    */
+
+        #event article .flex.items-center.gap-4,
+        #event article .flex.items-start.gap-4 {
+          gap: 11px !important;
+        }
+
+        #event article .w-10.h-10 {
+          width: 36px !important;
+          height: 36px !important;
+
+          flex: 0 0 36px !important;
+        }
+
+        #event article .w-10.h-10 svg {
+          width: 17px !important;
+          height: 17px !important;
+        }
+
+        #event article p {
+          overflow-wrap: anywhere !important;
+        }
+
+        #event article .font-serif.font-semibold {
+          font-size: 13px !important;
+          line-height: 1.45 !important;
+        }
+
+        #event article .font-sans.text-\[11px\] {
+          font-size: 10px !important;
+          line-height: 1.6 !important;
+        }
+
+        /* ==========================================================
+       4. GALLERY
+       ========================================================== */
+
+        #gallery {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          padding-left: 12px !important;
+          padding-right: 12px !important;
+
+          padding-top: 60px !important;
+          padding-bottom: 60px !important;
+
+          overflow: hidden !important;
+        }
+
+        /*
+       Gallery main container
+    */
+
+        #gallery > .relative.z-10 {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          padding-left: 4px !important;
+          padding-right: 4px !important;
+        }
+
+        /*
+       Header Gallery
+    */
+
+        #gallery header {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          margin-bottom: 28px !important;
+        }
+
+        #gallery header > div:first-child {
+          gap: 10px !important;
+          margin-bottom: 14px !important;
+        }
+
+        #gallery header > div:first-child span {
+          width: 42px !important;
+        }
+
+        #gallery header p:first-of-type {
+          font-size: 1.55rem !important;
+
+          line-height: 1.2 !important;
+        }
+
+        #gallery header h2 {
+          font-size: 2.2rem !important;
+
+          line-height: 1.05 !important;
+
+          letter-spacing: 0.03em !important;
+
+          white-space: normal !important;
+
+          margin-bottom: 14px !important;
+        }
+
+        #gallery header p:last-child {
+          font-size: 11px !important;
+          line-height: 1.7 !important;
+
+          max-width: 330px !important;
+
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+
+        /*
+       Masonry gallery
+       Tetap 2 kolom di HP.
+    */
+
+        #gallery .columns-2 {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          column-count: 2 !important;
+          column-gap: 8px !important;
+        }
+
+        /*
+       Setiap foto
+    */
+
+        #gallery figure {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          margin-bottom: 8px !important;
+
+          break-inside: avoid !important;
+          -webkit-column-break-inside: avoid !important;
+
+          min-width: 0 !important;
+        }
+
+        /*
+       Frame foto
+    */
+
+        #gallery figure > div {
+          width: 100% !important;
+
+          padding: 2px !important;
+
+          border-radius: 15px !important;
+        }
+
+        /*
+       Inner frame
+    */
+
+        #gallery figure > div > div {
+          width: 100% !important;
+
+          border-radius: 13px !important;
+
+          overflow: hidden !important;
+        }
+
+        /*
+       Foto
+    */
+
+        #gallery figure img {
+          display: block !important;
+
+          width: 100% !important;
+          max-width: 100% !important;
+
+          height: auto !important;
+
+          object-fit: cover !important;
+        }
+
+        /*
+       Nomor foto
+    */
+
+        #gallery figure span.absolute.top-3.left-3 {
+          top: 6px !important;
+          left: 6px !important;
+
+          width: 25px !important;
+          height: 25px !important;
+
+          font-size: 8px !important;
+        }
+
+        /*
+       Label hover:
+       jangan membuat layar HP melebar.
+    */
+
+        #gallery figure .absolute.bottom-3 {
+          left: 6px !important;
+          right: 6px !important;
+          bottom: 6px !important;
+
+          overflow: hidden !important;
+        }
+
+        #gallery figure .absolute.bottom-3 p {
+          font-size: 11px !important;
+
+          line-height: 1.2 !important;
+
+          white-space: normal !important;
+
+          overflow-wrap: anywhere !important;
+        }
+
+        /*
+       Quote bawah gallery
+    */
+
+        #gallery > .relative.z-10 > div:last-child {
+          width: 100% !important;
+          max-width: 100% !important;
+
+          margin-top: 32px !important;
+        }
+
+        #gallery > .relative.z-10 > div:last-child p {
+          font-size: 1.15rem !important;
+
+          line-height: 1.5 !important;
+
+          padding-left: 8px !important;
+          padding-right: 8px !important;
+        }
+      }
+
+      /* ============================================================
+     HP SANGAT KECIL
+     360px / 375px
+     ============================================================ */
+
+      @media (max-width: 380px) {
+        #couple {
+          padding-left: 10px !important;
+          padding-right: 10px !important;
+        }
+
+        #couple header h2 {
+          font-size: 2rem !important;
+        }
+
+        #couple article h3 {
+          font-size: 2.15rem !important;
+        }
+
+        #event {
+          padding-left: 9px !important;
+          padding-right: 9px !important;
+        }
+
+        #event header h2 {
+          font-size: 2rem !important;
+        }
+
+        #event #countdown-container > div > div {
+          padding-left: 9px !important;
+          padding-right: 9px !important;
+        }
+
+        #event .countdown-grid {
+          gap: 4px !important;
+        }
+
+        #event .countdown-card {
+          height: 68px !important;
+        }
+
+        #event .countdown-number {
+          font-size: 1.3rem !important;
+        }
+
+        #event .countdown-label {
+          font-size: 5.5px !important;
+        }
+
+        #gallery {
+          padding-left: 9px !important;
+          padding-right: 9px !important;
+        }
+
+        #gallery header h2 {
+          font-size: 2rem !important;
+        }
+
+        #gallery .columns-2 {
+          column-gap: 6px !important;
+        }
+
+        #gallery figure {
+          margin-bottom: 6px !important;
+        }
+      }
+
+      /* ============================================================
+     HP LANDSCAPE
+     ============================================================ */
+
+      @media (max-height: 500px) and (orientation: landscape) {
+        #ayat-section .mirror-stage {
+          max-width: 300px !important;
+        }
+
+        #couple,
+        #event,
+        #gallery {
+          padding-top: 40px !important;
+          padding-bottom: 40px !important;
+        }
+      }
+    </style>
   </head>
   <body
     class="bg-wedding-dark text-wedding-cream antialiased selection:bg-wedding-dark selection:text-white overflow-x-hidden"
@@ -3144,13 +4390,13 @@
 
       <!-- BACKGROUND PORTRAIT -->
       <div
-        class="mirror-stage relative z-10 w-full max-w-[620px] aspect-[941/1672] max-h-[100dvh]"
+        class="mirror-stage relative z-10 w-full max-w-none md:max-w-[620px] aspect-[941/1672] md:max-h-[100dvh]"
       >
         <div class="absolute inset-0">
           <img
             src="background-kaca.png"
             alt="Cermin Pernikahan"
-            class="absolute inset-0 w-full h-full object-contain"
+            class="absolute inset-0 w-full h-full object-cover md:object-contain"
           />
         </div>
 
